@@ -24,6 +24,15 @@ const schema = buildSchema(`
     verifychain(checklevel:Int, nblocks:Int):Boolean
     verifytxoutproof(proof:String!):[ ID ]
 
+    # Network
+    getconnectioncount:Int
+    getnettotals:NetTotals
+    getnetworkinfo:NetworkInfo
+    getnodeaddresses(count:Int):[ NodeAddress ]
+    getpeerinfo:[ PeerInfo ]
+    listbanned:[ String ]
+
+
     # Rawtransactions
     getrawtransaction(txid:ID!):RawTransaction #format verbose
   }
@@ -34,7 +43,7 @@ const schema = buildSchema(`
       # preciousblock "blockhash"
       # pruneblockchain (don't add)
       # savemempool (breaks statelessness without external storage)
-      # scantxoutset <action> ( <scanobjects> )      
+      # scantxoutset <action> ( <scanobjects> )
   # }
 
   # These BIP9softforks need better typing
@@ -79,7 +88,7 @@ const schema = buildSchema(`
     size:Int
     time:Int
     tx:[ ID ] # Not returned on verbosity 2
-    txVerbose:[ RawTransaction ] # Only returned on verbosity 2
+    txVerbose:[ RawTransaction ] # Only returned on verbosity 2. Can a directive be used to enforce this behavior?
     version:Int
     versionHex:String
     weight:Int
@@ -156,6 +165,12 @@ const schema = buildSchema(`
     window_tx_count:Int
   }
 
+  type LocalAddress {
+    address:String
+    port:Int
+    score:Int
+  }
+
   type MemPoolEntry {
     ancestorcount:Int
     ancestorfees:Int
@@ -190,6 +205,75 @@ const schema = buildSchema(`
     rawMemPool:[ ID ]
     size:Int
     usage:Int
+  }
+
+  type NetTotals {
+    timemillis:Float
+    totalbytesrecv:Float
+    totalbytessent:Float
+    uploadtarget:UploadTarget
+  }
+
+  type Network {
+    limited:Boolean
+    name:String
+    proxy_randomize_credentials:Boolean
+    proxy:String
+    reachable:Boolean
+  }
+
+  type NetworkInfo {
+    connections:Int
+    incrementalfee:Float
+    localaddresses:[ LocalAddress ]
+    localrelay:Boolean
+    localservices:String
+    networkactive:Boolean
+    networks:[ Network ]
+    protocolversion:Int
+    relayfee:Float
+    subversion:String
+    timeoffset:Int
+    version:Int
+    warnings:String
+  }
+
+  type NodeAddress {
+    address:String
+    port:Int
+    services:Float
+    time:Float
+  }
+
+  type PeerInfo {
+    addnode:Boolean
+    addr:String
+    addrbind:String
+    addrlocal:String
+    banscore:Int
+    # bytesrecv_per_msg: How should this work?
+    bytesrecv:Float
+    # bytessent_per_msg: How should this work?
+    bytessent:Float
+    conntime:Float
+    id:Int
+    inbound:Boolean
+    inflight:[ Int ]
+    lastrecv:Float
+    lastsend:Float
+    minfeefilter:Int
+    minping:Float
+    pingtime:Float
+    pingwait:Float
+    relaytxes:Boolean
+    services:String
+    startingheight:Int
+    subver:String
+    synced_blocks:Int
+    synced_headers:Int
+    timeoffset:Int
+    version:Int
+    whitelisted:Boolean
   }
 
   type RawTransaction {
@@ -269,6 +353,15 @@ const schema = buildSchema(`
     total_amount:Float
     transactions:Int
     txouts:Int
+  }
+
+  type UploadTarget {
+    bytes_left_in_cycle:Float
+    serve_historical_blocks:Boolean
+    target_reached:Boolean
+    target:Float
+    time_left_in_cycle:Float
+    timeframe:Float
   }
 `);
 

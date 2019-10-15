@@ -1,20 +1,25 @@
-import Block, { queryBlock } from './models/Block';
-import BlockChainInfo, { queryBlockChainInfo } from './models/BlockChainInfo';
-import BlockStats, { queryBlockStats } from './models/BlockStats';
-import ChainTip, { queryChainTips } from './models/ChainTip';
-import ChainTxStats, { queryChainTxStats } from './models/ChainTxStats';
-import MemPoolEntry, { queryMemPoolEntry } from './models/MemPoolEntry';
-import MemPoolInfo, { queryMemPoolInfo } from './models/MemPoolInfo';
-import RawTransaction, { queryRawTransaction } from './models/RawTransaction';
-import TxOut, { queryTxOut } from './models/TxOut';
-import TxOutSetInfo, { queryTxOutSetInfo } from './models/TxOutSetInfo';
+import Block, { queryBlock } from 'Models/Block';
+import BlockChainInfo, { queryBlockChainInfo } from 'Models/BlockChainInfo';
+import BlockStats, { queryBlockStats } from 'Models/BlockStats';
+import ChainTip, { queryChainTips } from 'Models/ChainTip';
+import ChainTxStats, { queryChainTxStats } from 'Models/ChainTxStats';
+import MemPoolEntry, { queryMemPoolEntry } from 'Models/MemPoolEntry';
+import MemPoolInfo, { queryMemPoolInfo } from 'Models/MemPoolInfo';
+import NetTotals, { queryNetTotals } from 'Models/NetTotals';
+import NetworkInfo, { queryNetworkInfo } from 'Models/NetworkInfo';
+import NodeAddress, { queryNodeAddresses } from 'Models/NodeAddress';
+import PeerInfo, { queryPeerInfo } from 'Models/PeerInfo';
+import RawTransaction, { queryRawTransaction } from 'Models/RawTransaction';
+import TxOut, { queryTxOut } from 'Models/TxOut';
+import TxOutSetInfo, { queryTxOutSetInfo } from 'Models/TxOutSetInfo';
 
 import RPC from 'Classes/RPC';
 
-import { BlockchainQueryMethod } from './types/BlockchainQueryMethod';
+import { BlockchainQueryMethod } from 'Types/BlockchainQueryMethod';
+import { NetworkQueryMethod } from 'Types/NetworkQueryMethod';
 import {
   GetRawTransactionParams
-} from './types/RawtransactionQueryParams';
+} from 'Types/RawtransactionQueryParams';
 import {
   GetBlockParams,
   GetBlockHashParams,
@@ -27,7 +32,8 @@ import {
   GetTxOutProofParams,
   VerifyChainParams,
   VerifyTxOutProofParams
-} from './types/BlockchainQueryParams';
+} from 'Types/BlockchainQueryParams';
+import { GetNodeAddressesParams } from 'Types/NetworkQueryParams';
 
 var resolvers = {
   // Blockchain
@@ -94,11 +100,6 @@ var resolvers = {
   getrawmempool():Promise<string[]> {
     return new RPC().query({ method: BlockchainQueryMethod.getrawmempool });
   },
-  getrawtransaction(
-    args:GetRawTransactionParams
-  ):Promise<RawTransaction> {
-    return queryRawTransaction(args);
-  },
   gettxout(args:GetTxOutParams):Promise<TxOut> {
     return queryTxOut(args);
   },
@@ -136,6 +137,34 @@ var resolvers = {
       method: BlockchainQueryMethod.verifytxoutproof,
       params: [ args.proof ]
     });
+  },
+
+  // Network
+  getconnectioncount():Promise<number> {
+    return new RPC().query({ method: NetworkQueryMethod.getconnectioncount });
+  },
+  getnettotals():Promise<NetTotals> {
+    return queryNetTotals();
+  },
+  getnetworkinfo():Promise<NetworkInfo> {
+    return queryNetworkInfo();
+  },
+  getnodeaddresses(args:GetNodeAddressesParams):Promise<NodeAddress[]> {
+    return queryNodeAddresses(args);
+  },
+  getpeerinfo():Promise<PeerInfo[]> {
+    return queryPeerInfo();
+  },
+  listbanned():Promise<string[]> {
+    return new RPC().query({ method: NetworkQueryMethod.listbanned });
+  },
+
+
+  // Rawtransactions
+  getrawtransaction(
+    args:GetRawTransactionParams
+  ):Promise<RawTransaction> {
+    return queryRawTransaction(args);
   },
 };
 
