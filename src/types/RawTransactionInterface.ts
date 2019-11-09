@@ -4,6 +4,7 @@ export interface RawTransactionInterface {
   confirmations?:number;
   hash?:string;
   hex?:string;
+  in_active_chain?:boolean;
   locktime?:number;
   size?:number;
   time?:number;
@@ -12,4 +13,5 @@ export interface RawTransactionInterface {
   vin?:object[];
   vout?:object[]
   vsize?:number;
+  weight?:number;
 }

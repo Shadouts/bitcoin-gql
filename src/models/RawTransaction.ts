@@ -10,6 +10,7 @@ export default class RawTransaction {
   public confirmations:number;
   public hash:string;
   public hex:string;
+  public in_active_chain:boolean;
   public locktime:number;
   public size:number;
   public time:number;
@@ -18,6 +19,7 @@ export default class RawTransaction {
   public vin:object[];
   public vout:object[]
   public vsize:number;
+  public weight:number;
 
   constructor (initVals:RawTransactionInterface) {
     Object.assign(this, initVals);

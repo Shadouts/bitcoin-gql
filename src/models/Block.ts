@@ -52,20 +52,20 @@ export default class Block {
     }
   }
 
-  public async nextBlock():Promise<Block> {
+  public async nextBlock(args:{ verbosity?:number; }):Promise<Block> {
     if (!this.nextblockhash) {
       return null;
     }
 
-    return queryBlock({ blockhash: this.nextblockhash });
+    return queryBlock({ blockhash: this.nextblockhash, ...args });
   }
 
-  public async previousBlock():Promise<Block> {
+  public async previousBlock(args:{ verbosity?:number; }):Promise<Block> {
     if (!this.previousblockhash) {
       return null;
     }
 
-    return queryBlock({ blockhash: this.previousblockhash });
+    return queryBlock({ blockhash: this.previousblockhash, ...args });
   }
 }
 

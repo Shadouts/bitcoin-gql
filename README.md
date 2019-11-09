@@ -19,11 +19,12 @@ RPC_PORT=<port number>
 ```
 Using the RPC server remotely will require special configuration of your Bitcoin JSON-RPC server. Please see the Bitcoin JSON-RPC documentation.
 
-To make the GraphiQL IDE available, set the following:
+To make the GraphiQL IDE and documentation available, set the following:
 
 ```
 GRAPHIQL=1
 ```
+![GraphiQL schema documentation and IDE](graphiql.jpg)
 
 Other environment variables:
 ```
@@ -71,7 +72,7 @@ To run the Docker container in bridge mode or on a remote host requires special 
 ## About the API
 BitcoinGQL began as an attempt to closely model the methods available on the Bitcoin JSON-RPC. The root queries in BitcoinGQL share the same name and casing as their method counterpart in the Bitcoin JSON-RPC. In most cases, the field names and casing match those found in the Bitcoin JSON-RPC. Extra edges or fields that have been added which take advantage of many of the benefits that GraphQL offers are named using camelCase. Field types have been selected to closely represent and strictly type what is available from the Bitcoin JSON-RPC.
 
-Currently, only Blockchain RPC method queries are available on BitcoinGQL plus one query to getrawtransaction. Many edges and extra fields which are obvious relationships in the data have not been constructed, but they are planned. The intent was to lay a strong foundation before moving on.
+Not all of the methods offered by Bitcoin JSON-RPC are implemented in BitcoinGQL. Currently, only Blockchain and Network RPC method queries are available on BitcoinGQL plus one query to getrawtransaction. None of the mutation type methods have been implemented. Many edges and extra fields which are obvious relationships in the data have not been constructed, but they are planned. The intent was to lay a strong foundation before moving on.
 
 Data mutations have intentionally been excluded, but maybe they will be added at some point.
 
