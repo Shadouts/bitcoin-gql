@@ -283,6 +283,7 @@ const schema = buildSchema(`
     confirmations:Int
     hash:String
     hex:String
+    in_active_chain:Boolean
     locktime:Int
     size:Int
     time:Int
@@ -291,6 +292,7 @@ const schema = buildSchema(`
     vin:[ TransactionInput ]
     vout:[ TransactionOutput ]
     vsize:Int
+    weight:Int
   }
 
   type ScriptPubKey {
