@@ -1,39 +1,150 @@
 import { buildSchema } from 'graphql';
 
 const schema = buildSchema(`
+  """ Blockchain, Network, and Rawtransaction query methods """
   type Query {
     # Blockchain
+
+    """
+    Returns the hash of the best (tip) block in the longest blockchain
+    """
     getbestblockhash:ID
+
+    """
+    If verbosity is 0, returns a string that is serialized, hex-encoded data for block.
+    If verbosity is 1, returns information about block.
+    If verbosity is 2, returns information about block and information about each transaction.
+    """
     getblock(blockhash:ID!, verbosity:Int):Block
+
+    """
+    Returns state info regarding blockchain processing.
+    """
     getblockchaininfo:BlockChainInfo
+
+    """
+    Returns the number of blocks in the longest blockchain.
+    """
     getblockcount:Int
+
+    """
+    Returns hash of block in best-block-chain at height provided.
+    """
     getblockhash(height:Int!):ID
+
+    """
+    Returns a string that is serialized, hex-encoded data for blockheader.
+    """
     getblockheader(blockhash:ID!):String # Param 2, false (serialized format)
+
+    """
+    Compute per block statistics for a given window. All amounts are in satoshis.
+    """
     getblockstats(height:Int!):BlockStats # Doesn't seem to work with block hash.
+
+    """
+    Return information about all known tips in the block tree, including the main chain as well as orphaned branches.
+    """
     getchaintips:[ ChainTip ]
+
+    """
+    Compute statistics about the total number and rate of transactions in the chain.
+    """
     getchaintxstats(nblocks:Int, blockhash:ID):ChainTxStats
+
+    """
+    Returns the proof-of-work difficulty as a multiple of the minimum difficulty.
+    """
     getdifficulty:Float
+
+    """
+    If txid is in the mempool, returns all in-mempool ancestors.
+    """
     getmempoolancestors(txid:ID!):[ ID ]
+
+    """
+    If txid is in the mempool, returns all in-mempool descendants.
+    """
     getmempooldescendants(txid:ID!):[ ID ]
+
+    """
+    Returns mempool data for given transaction
+    """
     getmempoolentry(txid:ID!):MemPoolEntry
+
+    """
+    Returns details on the active state of the TX memory pool.
+    """
     getmempoolinfo:MemPoolInfo
+
+    """
+    Returns all transaction ids in memory pool as a json array of string transaction ids.
+    """
     getrawmempool:[ ID ]
+
+    """
+    Returns details about an unspent transaction output.
+    """
     gettxout(txid:ID!, n:Int!, include_mempool:Boolean):TxOut
+
+    """
+    Returns a hex-encoded proof that "txid" was included in a block.
+    """
     gettxoutproof(txids:[ ID ]!, blockhash:ID):String
+
+    """
+    Returns statistics about the unspent transaction output set.
+    Note this call may take some time.
+    """
     gettxoutsetinfo:TxOutSetInfo # This query takes some time. Restrict via env vars.
+
+    """
+    Verifies blockchain database.
+    """
     verifychain(checklevel:Int, nblocks:Int):Boolean
+
+    """
+    Verifies that a proof points to a transaction in a block, returning the transaction it commits to and throwing an RPC error if the block is not in our best chain
+    """
     verifytxoutproof(proof:String!):[ ID ]
 
+
     # Network
+    """
+    Returns the number of connections to other nodes.
+    """
     getconnectioncount:Int
+
+    """
+    Returns information about network traffic, including bytes in, bytes out, and current time.
+    """
     getnettotals:NetTotals
+
+    """
+    Returns state info regarding P2P networking.
+    """
     getnetworkinfo:NetworkInfo
+
+    """
+    Return known addresses which can potentially be used to find new nodes in the network
+    """
     getnodeaddresses(count:Int):[ NodeAddress ]
+
+    """
+    Returns data about each connected network node as an array.
+    """
     getpeerinfo:[ PeerInfo ]
+
+    """
+    List all banned IPs/Subnets.
+    """
     listbanned:[ String ]
 
 
     # Rawtransactions
+    """
+    Returns information about 'txid'.
+    """
     getrawtransaction(txid:ID!):RawTransaction #format verbose
   }
 
@@ -73,22 +184,36 @@ const schema = buildSchema(`
     chainwork:String
     confirmations:Int
     difficulty:Float
-    hash:ID # Only value returned on verbosity 0
+
+    """Only this value is returned on verbosity 0"""
+    hash:ID
+
     height:Int
     hex:String
     mediantime:Int
     merkleroot:String
-    nextBlock:Block
+
+    """Block queried using nextblockhash"""
+    nextBlock(verbosity:Int):Block
+
     nextblockhash:ID
     nTx:Int
     nonce:Float
-    previousBlock:Block
+
+    """Block type queried using previousblockhash"""
+    previousBlock(verbosity:Int):Block
+
     previousblockhash:ID
     strippedsize:Int
     size:Int
     time:Int
-    tx:[ ID ] # Not returned on verbosity 2
-    txVerbose:[ RawTransaction ] # Only returned on verbosity 2. Can a directive be used to enforce this behavior?
+
+    """Only returned on verbosity 1"""
+    tx:[ ID ]
+
+    """Only returned on verbosity 2."""
+    txVerbose:[ RawTransaction ] # Can a directive be used to enforce this behavior?
+
     version:Int
     versionHex:String
     weight:Int
