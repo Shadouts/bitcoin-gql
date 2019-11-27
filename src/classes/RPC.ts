@@ -1,4 +1,4 @@
-import * as request from 'superagent';
+import request from 'superagent';
 import Query from '../types/Query';
 
 export default class RPC {
