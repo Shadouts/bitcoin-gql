@@ -18,7 +18,6 @@
     "@types/superagent": "^3.8.3",
     "clean-webpack-plugin": "^0.1.19",
     "nodemon": "^1.18.9",
-    "npm": "^6.13.0",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.2",
     "webpack": "^4.11.0",
