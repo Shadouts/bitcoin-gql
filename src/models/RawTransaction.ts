@@ -1,8 +1,11 @@
 import RPC from 'Classes/RPC';
 import { RawTransactionInterface } from 'Types/RawTransactionInterface';
 import Block, { queryBlock } from './Block';
-import { RawtransactionQueryMethod } from '../types/RawtransactionQueryMethod';
-import { GetRawTransactionParams } from '../types/RawtransactionQueryParams';
+import { RawtransactionQueryMethod } from 'Types/RawtransactionQueryMethod';
+import {
+  DecodeRawTransactionParams,
+  GetRawTransactionParams
+} from '../types/RawtransactionQueryParams';
 
 export default class RawTransaction {
   public blockhash:string;
@@ -27,6 +30,30 @@ export default class RawTransaction {
 
   public block():Promise<Block> {
     return queryBlock({ blockhash: this.blockhash });
+  }
+}
+
+export async function decodeRawTransaction(
+  args:DecodeRawTransactionParams
+):Promise<RawTransaction> {
+  let txData:RawTransactionInterface;
+
+  try {
+    const rpc:RPC = new RPC();
+    let params:[string, boolean?] = [args.hexstring];
+
+    if (args.iswitness !== undefined) {
+      params.push(args.iswitness);
+    }
+
+    txData = await rpc.query({
+      method: RawtransactionQueryMethod.decoderawtransaction,
+      params
+    });
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return new RawTransaction(txData)
   }
 }
 

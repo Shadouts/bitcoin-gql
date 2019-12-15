@@ -3,13 +3,17 @@ import BlockChainInfo, { queryBlockChainInfo } from 'Models/BlockChainInfo';
 import BlockStats, { queryBlockStats } from 'Models/BlockStats';
 import ChainTip, { queryChainTips } from 'Models/ChainTip';
 import ChainTxStats, { queryChainTxStats } from 'Models/ChainTxStats';
+import DecodeScript, { decodeScript } from 'Models/DecodedScript';
 import MemPoolEntry, { queryMemPoolEntry } from 'Models/MemPoolEntry';
 import MemPoolInfo, { queryMemPoolInfo } from 'Models/MemPoolInfo';
 import NetTotals, { queryNetTotals } from 'Models/NetTotals';
 import NetworkInfo, { queryNetworkInfo } from 'Models/NetworkInfo';
 import NodeAddress, { queryNodeAddresses } from 'Models/NodeAddress';
 import PeerInfo, { queryPeerInfo } from 'Models/PeerInfo';
-import RawTransaction, { queryRawTransaction } from 'Models/RawTransaction';
+import RawTransaction, {
+  decodeRawTransaction,
+  queryRawTransaction
+} from 'Models/RawTransaction';
 import TxOut, { queryTxOut } from 'Models/TxOut';
 import TxOutSetInfo, { queryTxOutSetInfo } from 'Models/TxOutSetInfo';
 
@@ -18,6 +22,8 @@ import RPC from 'Classes/RPC';
 import { BlockchainQueryMethod } from 'Types/BlockchainQueryMethod';
 import { NetworkQueryMethod } from 'Types/NetworkQueryMethod';
 import {
+  DecodeRawTransactionParams,
+  DecodeScriptParams,
   GetRawTransactionParams
 } from 'Types/RawtransactionQueryParams';
 import {
@@ -161,6 +167,14 @@ var resolvers = {
 
 
   // Rawtransactions
+  decoderawtransaction(
+    args:DecodeRawTransactionParams
+  ):Promise<RawTransaction> {
+    return decodeRawTransaction(args);
+  },
+  decodescript(args:DecodeScriptParams):Promise<DecodeScript> {
+    return decodeScript(args);
+  },
   getrawtransaction(
     args:GetRawTransactionParams
   ):Promise<RawTransaction> {
