@@ -3,7 +3,7 @@ import { buildSchema } from 'graphql';
 const schema = buildSchema(`
   """ Blockchain, Network, and Rawtransaction query methods """
   type Query {
-    # Blockchain
+    ### Blockchain ###
 
     """
     Returns the hash of the best (tip) block in the longest blockchain
@@ -13,7 +13,7 @@ const schema = buildSchema(`
     """
     If verbosity is 0, returns a string that is serialized, hex-encoded data for block.
     If verbosity is 1, returns information about block.
-    If verbosity is 2, returns information about block and information about each transaction.
+    If verbosity is 2, returns information about block and information about each transaction. Default 1.
     """
     getblock(blockhash:ID!, verbosity:Int):Block
 
@@ -109,7 +109,10 @@ const schema = buildSchema(`
     verifytxoutproof(proof:String!):[ ID ]
 
 
-    # Network
+    ### Network ###
+    # getaddednodeinfo
+    # ping
+
     """
     Returns the number of connections to other nodes.
     """
@@ -141,20 +144,55 @@ const schema = buildSchema(`
     listbanned:[ String ]
 
 
-    # Rawtransactions
+    ### Rawtransactions ###
+    # analyzepsbt "psbt"
+    # decodepsbt "psbt"
+    # testmempoolaccept ["rawtx",...] ( allowhighfees )
+
+    """
+    Return an object representing the serialized, hex-encoded transaction.
+    """
+    decoderawtransaction(
+      hexstring: String!
+      iswitness: Boolean
+    ):RawTransaction # Returns additional info from getrawtransaction verbose
+
     """
     Returns information about 'txid'.
     """
-    getrawtransaction(txid:ID!):RawTransaction #format verbose
+    getrawtransaction(txid:ID!):RawTransaction #format verbose because it contains hex-encoded value anyhow
+
+    """
+    Decode a hex-encoded script.
+    """
+    decodescript(hexstring: String!):DecodedScript
   }
 
   # Not ready for mutations
   # type Mutation {
-      # Blockchain
+      ### Blockchain ###
       # preciousblock "blockhash"
       # pruneblockchain (don't add)
       # savemempool (breaks statelessness without external storage)
       # scantxoutset <action> ( <scanobjects> )
+
+      ### Network ###
+      # addnode
+      # clearbanned
+      # disconnectnode
+      # setban
+      # setnetworkactive
+
+      ### Rawtransactions ###
+      # combinepsbt ["psbt",...]
+      # combinerawtransaction ["hexstring",...]
+      # converttopsbt "hexstring" ( permitsigdata iswitness )
+      # finalizepsbt "psbt" ( extract )
+      # fundrawtransaction "hexstring" ( options iswitness )
+      # joinpsbts ["psbt",...]
+      # sendrawtransaction "hexstring" ( allowhighfees )
+      # signrawtransactionwithkey "hexstring" ["privatekey",...] ( [{"txid":"hex","vout":n,"scriptPubKey":"hex","redeemScript":"hex","witnessScript":"hex","amount":amount},...] "sighashtype" )
+      # utxoupdatepsbt "psbt"
   # }
 
   # These BIP9softforks need better typing
@@ -190,7 +228,7 @@ const schema = buildSchema(`
 
     height:Int
     hex:String
-    mediantime:Int
+    mediantime:Float
     merkleroot:String
 
     """Block queried using nextblockhash"""
@@ -200,13 +238,13 @@ const schema = buildSchema(`
     nTx:Int
     nonce:Float
 
-    """Block type queried using previousblockhash"""
+    """Block queried using previousblockhash"""
     previousBlock(verbosity:Int):Block
 
     previousblockhash:ID
     strippedsize:Int
     size:Int
-    time:Int
+    time:Float
 
     """Only returned on verbosity 1"""
     tx:[ ID ]
@@ -230,7 +268,7 @@ const schema = buildSchema(`
     difficulty:Float
     headers:Int
     initialblockdownload:Boolean
-    mediantime:Int
+    mediantime:Float
     pruned:Boolean
     pruneheight:Int
     prune_target_size:Int
@@ -252,7 +290,7 @@ const schema = buildSchema(`
     maxfeerate:Int
     maxtxsize:Int
     medianfee:Int
-    mediantime:Int
+    mediantime:Float
     mediantxsize:Int
     minfee:Int
     minfeerate:Int
@@ -262,7 +300,7 @@ const schema = buildSchema(`
     swtotal_size:Int
     swtotal_weight:Int
     swtxs:Int
-    time:Int
+    time:Float
     total_out:Float
     total_size:Int
     total_weight:Int
@@ -281,13 +319,24 @@ const schema = buildSchema(`
   }
 
   type ChainTxStats {
-    time:Int
+    time:Float
     txcount:Int
     txrate:Float
     window_final_block_hash:String
     window_block_count:Int
     window_interval:Int
     window_tx_count:Int
+  }
+
+  type DecodedScript {
+    addresses:[ ID ]
+    asm:ID!
+    hex:String
+    p2sh:String
+    p2shSegwit:String
+    reqSigs:Int
+    segwit:DecodedScript
+    type:String
   }
 
   type LocalAddress {
@@ -311,7 +360,7 @@ const schema = buildSchema(`
     modifiedfee:Float
     size:Int
     spentby:[ ID ]
-    time:Int
+    time:Float
     wtxid:String
   }
 
@@ -358,7 +407,7 @@ const schema = buildSchema(`
     protocolversion:Int
     relayfee:Float
     subversion:String
-    timeoffset:Int
+    timeoffset:Float
     version:Int
     warnings:String
   }
@@ -396,7 +445,7 @@ const schema = buildSchema(`
     subver:String
     synced_blocks:Int
     synced_headers:Int
-    timeoffset:Int
+    timeoffset:Float
     version:Int
     whitelisted:Boolean
   }
@@ -404,14 +453,14 @@ const schema = buildSchema(`
   type RawTransaction {
     block:Block
     blockhash:ID
-    blocktime:Int
+    blocktime:Float
     confirmations:Int
     hash:String
     hex:String
     in_active_chain:Boolean
-    locktime:Int
+    locktime:Float
     size:Int
-    time:Int
+    time:Float
     txid:ID
     version:Int
     vin:[ TransactionInput ]
