@@ -4,6 +4,7 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./src",
     "module": "es6",
+    "moduleResolution": "node",
     "noImplicitAny": true,
     "outDir": "./dist/",
     "paths": {
