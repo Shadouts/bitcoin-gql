@@ -51,7 +51,7 @@ var resolvers = {
   getblock(args:GetBlockParams):Promise<Block> {
     return queryBlock(args);
   },
-  getblockchaininfo():Promise<BlockChainInfo> {
+  getblockchaininfo():Promise<BlockChainInfo|null> {
     return queryBlockChainInfo();
   },
   getblockcount():Promise<number> {
@@ -71,13 +71,13 @@ var resolvers = {
       params: [ args.blockhash, false ]
     });
   },
-  getblockstats(args:GetBlockStatsParams):Promise<BlockStats> {
+  getblockstats(args:GetBlockStatsParams):Promise<BlockStats|null> {
     return queryBlockStats(args);
   },
   getchaintips():Promise<ChainTip[]> {
     return queryChainTips();
   },
-  getchaintxstats(args:GetChainTxStatsParams):Promise<ChainTxStats> {
+  getchaintxstats(args:GetChainTxStatsParams):Promise<ChainTxStats|null> {
     return queryChainTxStats(args);
   },
   getdifficulty():Promise<number> {
@@ -97,41 +97,42 @@ var resolvers = {
       params: [ args.txid ]
     });
   },
-  getmempoolentry(args:GetMemPoolEntryParams):Promise<MemPoolEntry> {
+  getmempoolentry(args:GetMemPoolEntryParams):Promise<MemPoolEntry|null> {
     return queryMemPoolEntry(args);
   },
-  getmempoolinfo():Promise<MemPoolInfo> {
+  getmempoolinfo():Promise<MemPoolInfo|null> {
     return queryMemPoolInfo();
   },
   getrawmempool():Promise<string[]> {
     return new RPC().query({ method: BlockchainQueryMethod.getrawmempool });
   },
-  gettxout(args:GetTxOutParams):Promise<TxOut> {
+  gettxout(args:GetTxOutParams):Promise<TxOut|null> {
     return queryTxOut(args);
   },
   gettxoutproof(args:GetTxOutProofParams):Promise<string> {
     return new RPC().query({
       method: BlockchainQueryMethod.gettxoutproof,
-      params: [ args.txids, args.blockhash ]
+      params: [ args.txids || [], args.blockhash || '' ]
     }).catch((err:Error) => {
       console.error(err);
       return null;
     });
   },
-  gettxoutsetinfo():Promise<TxOutSetInfo> {
-    if (Boolean( parseInt(process.env.GRAPHIQL) > 0 ) === true) {
-      return null;
+  gettxoutsetinfo():Promise<TxOutSetInfo|null> {
+    if (Boolean( parseInt(process.env.GRAPHIQL || '0') > 0 ) === true) {
+      return Promise.resolve(null);
     } else {
       return queryTxOutSetInfo();
     }
   },
   verifychain(args:VerifyChainParams):Promise<boolean> {
     const checklevel:number = args.checklevel || 3;
-    const nblockLimit:number = parseInt(process.env.VERIFY_CHAIN_LIMIT) || 6;
+    const nblockLimit:number =
+      parseInt(process.env.VERIFY_CHAIN_LIMIT || '0') || 6;
 
-    // This query allows for verification of entire chain. It's important to prevent nBlocks from equalling 0 or a very large number.
+    // Warning. This query allows for verification of entire chain. It's important to prevent nBlocks from equalling 0 or a very large number.
     const nblocks:number =
-      (args.nblocks > nblockLimit) ? nblockLimit : args.nblocks;
+      (args.nblocks && args.nblocks < nblockLimit) ? args.nblocks :  nblockLimit;
 
     return new RPC().query({
       method: BlockchainQueryMethod.verifychain,
@@ -149,10 +150,10 @@ var resolvers = {
   getconnectioncount():Promise<number> {
     return new RPC().query({ method: NetworkQueryMethod.getconnectioncount });
   },
-  getnettotals():Promise<NetTotals> {
+  getnettotals():Promise<NetTotals|null> {
     return queryNetTotals();
   },
-  getnetworkinfo():Promise<NetworkInfo> {
+  getnetworkinfo():Promise<NetworkInfo|null> {
     return queryNetworkInfo();
   },
   getnodeaddresses(args:GetNodeAddressesParams):Promise<NodeAddress[]> {
@@ -169,15 +170,15 @@ var resolvers = {
   // Rawtransactions
   decoderawtransaction(
     args:DecodeRawTransactionParams
-  ):Promise<RawTransaction> {
+  ):Promise<RawTransaction|null> {
     return decodeRawTransaction(args);
   },
-  decodescript(args:DecodeScriptParams):Promise<DecodeScript> {
+  decodescript(args:DecodeScriptParams):Promise<DecodeScript|null> {
     return decodeScript(args);
   },
   getrawtransaction(
     args:GetRawTransactionParams
-  ):Promise<RawTransaction> {
+  ):Promise<RawTransaction|null> {
     return queryRawTransaction(args);
   },
 };

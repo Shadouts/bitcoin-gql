@@ -1,7 +1,7 @@
 export class ScriptPubKey {
-  public addresses:string[];
-  public asm:string;
-  public hex:string;
-  public reqSigs:number;
-  public type:string;
+  public addresses:string[]|undefined;
+  public asm:string|undefined;
+  public hex:string|undefined;
+  public reqSigs:number|undefined;
+  public type:string|undefined;
 }

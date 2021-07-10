@@ -4,18 +4,18 @@ import { NetTotalsInterface } from 'Types/NetTotalsInterface';
 import { UploadTarget } from 'Types/NetTotalsSubtypes';
 
 export default class NetTotals {
-  public timemillis:number;
-  public totalbytesrecv:number;
-  public totalbytessent:number;
-  public uploadtarget:UploadTarget;
+  public timemillis:number|undefined;
+  public totalbytesrecv:number|undefined;
+  public totalbytessent:number|undefined;
+  public uploadtarget:UploadTarget|undefined;
 
   constructor (initVals:NetTotalsInterface) {
     Object.assign(this, initVals);
   }
 }
 
-export async function queryNetTotals():Promise<NetTotals> {
-  let info:NetTotalsInterface;
+export async function queryNetTotals():Promise<NetTotals|null> {
+  let info:NetTotalsInterface|null = null;
 
   try {
     const rpc:RPC = new RPC();
@@ -26,6 +26,10 @@ export async function queryNetTotals():Promise<NetTotals> {
   } catch (err) {
     console.error(err);
   } finally {
-    return new NetTotals(info);
+    if (info) {
+      return new NetTotals(info);
+    } else {
+      return null
+    }
   }
 }

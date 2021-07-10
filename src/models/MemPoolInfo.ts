@@ -3,18 +3,18 @@ import { BlockchainQueryMethod } from 'Types/BlockchainQueryMethod';
 import { MemPoolInfoInterface } from 'Types/MemPoolInfoInterface';
 
 export default class MemPoolInfo {
-  public bytes:number;
-  public maxmempool:number;
-  public mempoolminfee:number;
-  public minrelaytxfee:number;
-  public size:number;
+  public bytes:number|undefined;
+  public maxmempool:number|undefined;
+  public mempoolminfee:number|undefined;
+  public minrelaytxfee:number|undefined;
+  public size:number|undefined;
 
   constructor(initVals:MemPoolInfoInterface) {
     Object.assign(this, initVals);
   }
 
-  public async rawMemPool():Promise<string[]> {
-    let raw:string[] = null;
+  public async rawMemPool():Promise<string[]|null> {
+    let raw:string[]|null = null;
 
     try {
       const rpc:RPC = new RPC();
@@ -29,8 +29,8 @@ export default class MemPoolInfo {
   }
 }
 
-export async function queryMemPoolInfo():Promise<MemPoolInfo> {
-  let info:MemPoolInfoInterface;
+export async function queryMemPoolInfo():Promise<MemPoolInfo|null> {
+  let info:MemPoolInfoInterface|null = null;
 
   try {
     const rpc:RPC = new RPC();
@@ -40,6 +40,10 @@ export async function queryMemPoolInfo():Promise<MemPoolInfo> {
   } catch (err) {
     console.error(err);
   } finally {
-    return new MemPoolInfo(info);
+    if (info) {
+      return new MemPoolInfo(info);
+    } else {
+      return null;
+    }
   }
 }

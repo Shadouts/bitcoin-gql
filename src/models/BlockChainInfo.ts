@@ -8,23 +8,23 @@ import {
 } from 'Types/BlockchainSubtypes';
 
 export default class BlockChainInfo {
-  public automatic_pruning:boolean;
-  public bestblockhash:string;
-  public bip9_softforks:BIP9Softforks;
-  public blocks:number;
-  public chain:string;
-  public chainwork:string;
-  public difficulty:number;
-  public headers:number;
-  public initialblockdownload:boolean;
-  public mediantime:number;
-  public pruned:boolean;
-  public pruneheight:number;
-  public prune_target_size:number;
-  public size_on_disk:number;
-  public softforks:SoftFork[];
-  public verificationprogress:number;
-  public warnings:string;
+  public automatic_pruning:boolean|undefined;
+  public bestblockhash:string|undefined;
+  public bip9_softforks:BIP9Softforks|undefined;
+  public blocks:number|undefined;
+  public chain:string|undefined;
+  public chainwork:string|undefined;
+  public difficulty:number|undefined;
+  public headers:number|undefined;
+  public initialblockdownload:boolean|undefined;
+  public mediantime:number|undefined;
+  public pruned:boolean|undefined;
+  public pruneheight:number|undefined;
+  public prune_target_size:number|undefined;
+  public size_on_disk:number|undefined;
+  public softforks:SoftFork[]|undefined;
+  public verificationprogress:number|undefined;
+  public warnings:string|undefined;
 
   constructor(initVals:BlockChainInfoInterface) {
     Object.assign(this, initVals);
@@ -32,14 +32,14 @@ export default class BlockChainInfo {
 
   public bestBlock(args:{ verbosity:number; }):Promise<Block> {
     return queryBlock({
-      blockhash: this.bestblockhash,
+      blockhash: this.bestblockhash || '',
       verbosity: args.verbosity
     });
   }
 }
 
-export async function queryBlockChainInfo():Promise<BlockChainInfo> {
-  let info:BlockChainInfoInterface;
+export async function queryBlockChainInfo():Promise<BlockChainInfo|null> {
+  let info:BlockChainInfoInterface|null = null;
 
   try {
     const rpc:RPC = new RPC();
@@ -50,6 +50,10 @@ export async function queryBlockChainInfo():Promise<BlockChainInfo> {
   } catch (err) {
     console.error(err);
   } finally {
-    return new BlockChainInfo(info);
+    if (info) {
+      return new BlockChainInfo(info);
+    } else {
+      return null
+    }
   }
 }

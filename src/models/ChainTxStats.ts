@@ -4,13 +4,13 @@ import { BlockchainQueryMethod } from 'Types/BlockchainQueryMethod';
 import { GetChainTxStatsParams } from 'Types/BlockchainQueryParams';
 
 export default class ChainTxStats {
-  public time:number;
-  public txcount:number;
-  public txrate:number;
-  public window_block_count:number;
-  public window_final_block_hash:string;
-  public window_interval:number;
-  public window_tx_count:number;
+  public time:number|undefined;
+  public txcount:number|undefined;
+  public txrate:number|undefined;
+  public window_block_count:number|undefined;
+  public window_final_block_hash:string|undefined;
+  public window_interval:number|undefined;
+  public window_tx_count:number|undefined;
 
   constructor(initVals:ChainTxStatsInterface) {
     Object.assign(this, initVals);
@@ -19,8 +19,8 @@ export default class ChainTxStats {
 
 export async function queryChainTxStats(
   args:GetChainTxStatsParams
-):Promise<ChainTxStats> {
-  let stats:ChainTxStatsInterface;
+):Promise<ChainTxStats|null> {
+  let stats:ChainTxStatsInterface|null = null;
 
   try {
     const rpc:RPC = new RPC();
@@ -29,7 +29,7 @@ export async function queryChainTxStats(
     if (args.nblocks) {
       params.push(args.nblocks);
     } else {
-      params.push(null);
+      params.push(0);
     }
 
     if (args.blockhash) {
@@ -40,10 +40,13 @@ export async function queryChainTxStats(
       method: BlockchainQueryMethod.getchaintxstats,
       params
     });
-    return this;
   } catch (err) {
     console.error(err);
   } finally {
-    return new ChainTxStats(stats);
+    if (stats) {
+      return new ChainTxStats(stats);
+    } else {
+      return null
+    }
   }
 }

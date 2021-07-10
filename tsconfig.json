@@ -2,17 +2,24 @@
   "compilerOptions": {
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
+    "alwaysStrict": true,
     "baseUrl": "./src",
     "module": "es6",
     "moduleResolution": "node",
     "noImplicitAny": true,
+    "noImplicitThis": true,
     "outDir": "./dist/",
     "paths": {
       "Classes/*": ["classes/*"],
       "Models/*": ["models/*"],
+      "Schema/*": ["schema/*"],
       "Types/*": ["types/*"],
     },
     "skipLibCheck":true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
     "target": "esnext",
     "types" : [ "node" ]
   }

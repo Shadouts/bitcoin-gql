@@ -20,6 +20,11 @@ module.exports = {
         loader: 'ts-loader',
         include: path.resolve(__dirname, 'src'),
         exclude: /node_modules/
+      },
+      {
+        test: /\.graphql$/,
+        exclude: /node_modules/,
+        loader: 'graphql-tag/loader',
       }
     ]
   },
@@ -27,6 +32,7 @@ module.exports = {
     alias: {
       Classes: path.resolve(__dirname, 'src/classes/'),
       Models: path.resolve(__dirname, 'src/models/'),
+      Schema: path.resolve(__dirname, 'src/schema/'),
       Types: path.resolve(__dirname, 'src/types/')
     },
     extensions: [ '.ts', '.gql', '.graphql' ]

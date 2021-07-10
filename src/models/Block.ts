@@ -6,38 +6,38 @@ import { BlockchainQueryMethod } from 'Types/BlockchainQueryMethod';
 import { GetBlockParams } from 'Types/BlockchainQueryParams';
 
 export default class Block {
-  public bits:string;
-  public chainwork:string;
-  public confirmations:number;
-  public difficulty:number;
-  public hash:string;
-  public height:number;
-  public hex:string; // For verbosity 0. Serialized hex value of block
-  public mediantime:number;
-  public merkleroot:string;
-  public nextblockhash:string;
-  public nonce:number;
-  public nTx:number;
-  public previousblockhash:string;
-  public size:number;
-  public strippedsize:number;
-  public time:number;
-  public tx:string[];
-  public txVerbose:RawTransaction[]; // For verbosity 2. verbose block transactions
-  public version:number;
-  public versionHex:string; // camelCasing exists in the RPC response
-  public weight:number;
+  public bits:string|undefined;
+  public chainwork:string|undefined;
+  public confirmations:number|undefined;
+  public difficulty:number|undefined;
+  public hash:string|undefined;
+  public height:number|undefined;
+  public hex:string|undefined; // For verbosity 0. Serialized hex value of block
+  public mediantime:number|undefined;
+  public merkleroot:string|undefined;
+  public nextblockhash:string|undefined;
+  public nonce:number|undefined;
+  public nTx:number|undefined;
+  public previousblockhash:string|undefined;
+  public size:number|undefined;
+  public strippedsize:number|undefined;
+  public time:number|undefined;
+  public tx:string[]|undefined;
+  public txVerbose:RawTransaction[]|undefined; // For verbosity 2. verbose block transactions
+  public version:number|undefined;
+  public versionHex:string|undefined; // camelCasing exists in the RPC response
+  public weight:number|undefined;
 
   constructor (initVals:BlockInterface) {
     Object.assign(this, initVals);
   }
 
-  public async blockHeader():Promise<string> {
+  public async blockHeader():Promise<string|null> {
     if (!this.hash) {
       return null;
     }
 
-    let header:string = null;
+    let header:string|null = null;
 
     try {
       const rpc:RPC = new RPC();
@@ -52,7 +52,7 @@ export default class Block {
     }
   }
 
-  public async nextBlock(args:{ verbosity?:number; }):Promise<Block> {
+  public async nextBlock(args:{ verbosity?:number; }):Promise<Block|null> {
     if (!this.nextblockhash) {
       return null;
     }
@@ -60,7 +60,7 @@ export default class Block {
     return queryBlock({ blockhash: this.nextblockhash, ...args });
   }
 
-  public async previousBlock(args:{ verbosity?:number; }):Promise<Block> {
+  public async previousBlock(args:{ verbosity?:number; }):Promise<Block|null> {
     if (!this.previousblockhash) {
       return null;
     }
@@ -75,10 +75,10 @@ export async function queryBlock(args:GetBlockParams):Promise<Block> {
   let blockData:BlockInterface = {};
 
   try {
-    if (args.verbosity !== 0) {
+    if (args.verbosity && args.verbosity !== 0) {
       const data:any = await rpc.query({
         method: BlockchainQueryMethod.getblock,
-        params: [ args.blockhash, args.verbosity ]
+        params: [ args.blockhash || '', args.verbosity ]
       });
 
       if (args.verbosity === 2) {

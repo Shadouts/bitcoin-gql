@@ -7,27 +7,27 @@ import {
 } from 'Types/NetworkInfoSubtypes';
 
 export default class NetworkInfo {
-  public connections:number;
-  public incrementalfee:number;
-  public localaddresses:LocalAddress[];
-  public localrelay:boolean;
-  public localservices:string;
-  public networkactive:boolean;
-  public networks:Network[];
-  public protocolversion:number;
-  public relayfee:number;
-  public subversion:string;
-  public timeoffset:number;
-  public version:number;
-  public warnings:string;
+  public connections:number|undefined;
+  public incrementalfee:number|undefined;
+  public localaddresses:LocalAddress[]|undefined;
+  public localrelay:boolean|undefined;
+  public localservices:string|undefined;
+  public networkactive:boolean|undefined;
+  public networks:Network[]|undefined;
+  public protocolversion:number|undefined;
+  public relayfee:number|undefined;
+  public subversion:string|undefined;
+  public timeoffset:number|undefined;
+  public version:number|undefined;
+  public warnings:string|undefined;
 
   constructor (initVals:NetworkInfoInterface) {
     Object.assign(this, initVals);
   }
 }
 
-export async function queryNetworkInfo():Promise<NetworkInfo> {
-  let info:NetworkInfoInterface;
+export async function queryNetworkInfo():Promise<NetworkInfo|null> {
+  let info:NetworkInfoInterface|null = null;
 
   try {
     const rpc:RPC = new RPC();
@@ -38,6 +38,10 @@ export async function queryNetworkInfo():Promise<NetworkInfo> {
   } catch (err) {
     console.error(err);
   } finally {
-    return new NetworkInfo(info);
+    if (info) {
+      return new NetworkInfo(info);
+    } else {
+      return null;
+    }
   }
 }

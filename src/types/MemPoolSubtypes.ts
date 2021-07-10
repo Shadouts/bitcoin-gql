@@ -1,6 +1,6 @@
 export class MemPoolFees  {
-  public ancestor:number;
-  public base:number;
-  public descendant:number;
-  public modified:number;
+  public ancestor:number|undefined;
+  public base:number|undefined;
+  public descendant:number|undefined;
+  public modified:number|undefined;
 }

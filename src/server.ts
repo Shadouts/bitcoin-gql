@@ -5,10 +5,10 @@ import graphqlHTTP from 'express-graphql';
 import cors from 'cors';
 import schema from './schema';
 import resolvers from './resolvers';
-const compression = require('compression'); // Won't import.
+import compression from 'compression';
 
 const app = express();
-const graphiql:boolean = Boolean( parseInt(process.env.GRAPHIQL) > 0 );
+const graphiql:boolean = Boolean( parseInt(process.env.GRAPHIQL || '0') > 0 );
 
 app.use( cors({ origin: true }) );
 app.use(compression());

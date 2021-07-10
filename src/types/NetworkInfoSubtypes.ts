@@ -1,13 +1,13 @@
 export class LocalAddress {
-  public address:string;
-  public port:number;
-  public score:number;
+  public address:string|undefined;
+  public port:number|undefined;
+  public score:number|undefined;
 }
 
 export class Network {
-  public limited:boolean;
-  public name:string;
-  public proxy_randomize_credentials:boolean;
-  public proxy:string;
-  public reachable:boolean;
+  public limited:boolean|undefined;
+  public name:string|undefined;
+  public proxy_randomize_credentials:boolean|undefined;
+  public proxy:string|undefined;
+  public reachable:boolean|undefined;
 }

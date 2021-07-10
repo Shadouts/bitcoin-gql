@@ -4,10 +4,10 @@ import { GetNodeAddressesParams } from 'Types/NetworkQueryParams';
 import { NodeAddressInterface } from 'Types/NodeAddressInterface';
 
 export default class NodeAddress {
-  public address:string;
-  public port:number;
-  public services:number;
-  public time:number;
+  public address:string|undefined;
+  public port:number|undefined;
+  public services:number|undefined;
+  public time:number|undefined;
 
   constructor (initVals:NodeAddressInterface) {
     Object.assign(this, initVals);
@@ -17,7 +17,7 @@ export default class NodeAddress {
 export async function queryNodeAddresses(
   args:GetNodeAddressesParams
 ):Promise<NodeAddress[]> {
-  let addresses:NodeAddressInterface[];
+  let addresses:NodeAddressInterface[] = [];
 
   try {
     const rpc:RPC = new RPC();

@@ -3,34 +3,34 @@ import { NetworkQueryMethod } from 'Types/NetworkQueryMethod';
 import { PeerInfoInterface } from 'Types/PeerInfoInterface';
 
 export default class PeerInfo {
-  public addnode:boolean;
-  public addr:string;
-  public addrbind:string;
-  public addrlocal:string;
-  public banscore:number;
+  public addnode:boolean|undefined;
+  public addr:string|undefined;
+  public addrbind:string|undefined;
+  public addrlocal:string|undefined;
+  public banscore:number|undefined;
   // public bytesrecv_per_msg: How should this work?
-  public bytesrecv:number;
+  public bytesrecv:number|undefined;
   // public bytessent_per_msg: How should this work?
-  public bytessent:number;
-  public conntime:number;
-  public id:number;
-  public inbound:boolean;
-  public inflight:number[];
-  public lastrecv:number;
-  public lastsend:number;
-  public minfeefilter:number;
-  public minping:number;
-  public pingtime:number;
-  public pingwait:number;
-  public relaytxes:boolean;
-  public services:string;
-  public startingheight:number;
-  public subver:string;
-  public synced_blocks:number;
-  public synced_headers:number;
-  public timeoffset:number;
-  public version:number;
-  public whitelisted:boolean;
+  public bytessent:number|undefined;
+  public conntime:number|undefined;
+  public id:number|undefined;
+  public inbound:boolean|undefined;
+  public inflight:number[]|undefined;
+  public lastrecv:number|undefined;
+  public lastsend:number|undefined;
+  public minfeefilter:number|undefined;
+  public minping:number|undefined;
+  public pingtime:number|undefined;
+  public pingwait:number|undefined;
+  public relaytxes:boolean|undefined;
+  public services:string|undefined;
+  public startingheight:number|undefined;
+  public subver:string|undefined;
+  public synced_blocks:number|undefined;
+  public synced_headers:number|undefined;
+  public timeoffset:number|undefined;
+  public version:number|undefined;
+  public whitelisted:boolean|undefined;
 
   constructor (initVals:PeerInfoInterface) {
     Object.assign(this, initVals);
@@ -38,7 +38,7 @@ export default class PeerInfo {
 }
 
 export async function queryPeerInfo():Promise<PeerInfo[]> {
-  let info:PeerInfoInterface[];
+  let info:PeerInfoInterface[] = [];
 
   try {
     const rpc:RPC = new RPC();

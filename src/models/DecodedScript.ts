@@ -4,14 +4,14 @@ import { DecodeScriptParams } from 'Types/RawtransactionQueryParams'
 import { DecodedScriptInterface } from 'Types/DecodedScriptInterface';
 
 export default class DecodedScript {
-  public addresses:string[];
-  public asm:string;
-  public hex:string;
-  public p2sh:string;
-  public p2shSegwit:string;
-  public reqSigs:number;
-  public segwit:DecodedScript;
-  public type:string;
+  public addresses:string[]|undefined;
+  public asm:string|undefined;
+  public hex:string|undefined;
+  public p2sh:string|undefined;
+  public p2shSegwit:string|undefined;
+  public reqSigs:number|undefined;
+  public segwit:DecodedScript|undefined;
+  public type:string|undefined;
 
   constructor (initVals:DecodedScriptInterface) {
     Object.assign(this, initVals);
@@ -20,8 +20,8 @@ export default class DecodedScript {
 
 export async function decodeScript(
   args:DecodeScriptParams
-):Promise<DecodedScript> {
-  let data:DecodedScriptInterface;
+):Promise<DecodedScript|null> {
+  let data:DecodedScriptInterface|null = null;
 
   try {
     const rpc:RPC = new RPC();
@@ -33,10 +33,21 @@ export async function decodeScript(
   } catch (err) {
     console.error(err);
   } finally {
-    if (data.segwit) {
-      data.segwit = new DecodedScript(data.segwit);
+    if (data && data.segwit) {
+      data.segwit = new DecodedScript({
+        addresses: data.segwit.addresses,
+        asm: data.segwit.asm || '',
+        hex: data.segwit.hex,
+        p2sh: data.segwit.p2sh,
+        p2shSegwit: data.segwit.p2shSegwit,
+        reqSigs: data.segwit.reqSigs,
+        segwit: data.segwit.segwit,
+        type: data.segwit.type
+      });
+      return new DecodedScript(data);
+    } else {
+      return null;
     }
 
-    return new DecodedScript(data);
   }
 }

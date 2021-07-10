@@ -4,35 +4,35 @@ import { BlockchainQueryMethod } from 'Types/BlockchainQueryMethod';
 import { GetBlockStatsParams } from 'Types/BlockchainQueryParams';
 
 export default class BlockStats {
-  public avgfee:number;
-  public avgfeerate:number;
-  public avgtxsize:number;
-  public blockhash:string;
-  public feerate_percentiles:number[]
-  public height:number;
-  public ins:number;
-  public maxfee:number;
-  public maxfeerate:number;
-  public maxtxsize:number;
-  public medianfee:number;
-  public mediantime:number;
-  public mediantxsize:number;
-  public minfee:number;
-  public minfeerate:number;
-  public mintxsize:number;
-  public outs:number;
-  public subsidy:number;
-  public swtotal_size:number;
-  public swtotal_weight:number;
-  public swtxs:number;
-  public time:number;
-  public total_out:number;
-  public total_size:number;
-  public total_weight:number;
-  public totalfee:number;
-  public txs:number;
-  public utxo_increase:number;
-  public utxo_size_inc:number;
+  public avgfee:number|undefined;
+  public avgfeerate:number|undefined;
+  public avgtxsize:number|undefined;
+  public blockhash:string|undefined;
+  public feerate_percentiles:number[]|undefined;
+  public height:number|undefined;
+  public ins:number|undefined;
+  public maxfee:number|undefined;
+  public maxfeerate:number|undefined;
+  public maxtxsize:number|undefined;
+  public medianfee:number|undefined;
+  public mediantime:number|undefined;
+  public mediantxsize:number|undefined;
+  public minfee:number|undefined;
+  public minfeerate:number|undefined;
+  public mintxsize:number|undefined;
+  public outs:number|undefined;
+  public subsidy:number|undefined;
+  public swtotal_size:number|undefined;
+  public swtotal_weight:number|undefined;
+  public swtxs:number|undefined;
+  public time:number|undefined;
+  public total_out:number|undefined;
+  public total_size:number|undefined;
+  public total_weight:number|undefined;
+  public totalfee:number|undefined;
+  public txs:number|undefined;
+  public utxo_increase:number|undefined;
+  public utxo_size_inc:number|undefined;
 
   constructor(initVals:BlockStatsInterface) {
     Object.assign(this, initVals);
@@ -41,8 +41,8 @@ export default class BlockStats {
 
 export async function queryBlockStats(
   args:GetBlockStatsParams
-):Promise<BlockStats> {
-  let stats:BlockStatsInterface;
+):Promise<BlockStats|null> {
+  let stats:BlockStatsInterface|null = null;
 
   try {
     const rpc:RPC = new RPC();
@@ -54,6 +54,10 @@ export async function queryBlockStats(
   } catch (err) {
     console.error();
   } finally {
-    return new BlockStats(stats);
+    if (stats) {
+      return new BlockStats(stats);
+    } else {
+      return null;
+    }
   }
 }

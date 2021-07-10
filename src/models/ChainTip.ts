@@ -4,22 +4,22 @@ import { ChainTipInterface } from 'Types/ChainTipInterface';
 import { BlockchainQueryMethod } from 'Types/BlockchainQueryMethod';
 
 export default class ChainTip {
-  public height:number;
-  public hash:string
-  public branchlen:number;
-  public status:string;
+  public height:number|undefined;
+  public hash:string|undefined;
+  public branchlen:number|undefined;
+  public status:string|undefined;
 
   constructor(initVals:ChainTipInterface) {
     Object.assign(this, initVals);
   }
 
   public block():Promise<Block> {
-    return queryBlock({ blockhash: this.hash });
+    return queryBlock({ blockhash: this.hash || '' });
   }
 }
 
 export async function queryChainTips():Promise<ChainTip[]> {
-  let tips:ChainTipInterface[];
+  let tips:ChainTipInterface[] = [];
 
   try {
     const rpc:RPC = new RPC();

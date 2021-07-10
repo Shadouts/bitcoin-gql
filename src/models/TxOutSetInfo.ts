@@ -4,26 +4,26 @@ import { TxOutSetInfoInterface } from 'Types/TxOutSetInfoInterface';
 import { BlockchainQueryMethod } from 'Types/BlockchainQueryMethod';
 
 export default class TxOutSetInfo {
-  public bestblock:string
-  public bogosize:number;
-  public disk_size:number;
-  public hash_serialized_2:string;
-  public height:number;
-  public total_amount:number;
-  public transactions:number;
-  public txouts:number;
+  public bestblock:string|undefined;
+  public bogosize:number|undefined;
+  public disk_size:number|undefined;
+  public hash_serialized_2:string|undefined;
+  public height:number|undefined;
+  public total_amount:number|undefined;
+  public transactions:number|undefined;
+  public txouts:number|undefined;
 
   constructor(initVals:TxOutSetInfoInterface) {
     Object.assign(this, initVals);
   }
 
   public bestBlockData():Promise<Block> {
-    return queryBlock({ blockhash: this.bestblock });
+    return queryBlock({ blockhash: this.bestblock || '' });
   }
 }
 
-export async function queryTxOutSetInfo():Promise<TxOutSetInfo> {
-  let info:TxOutSetInfoInterface;
+export async function queryTxOutSetInfo():Promise<TxOutSetInfo|null> {
+  let info:TxOutSetInfoInterface|null = null;
 
   try {
     const rpc:RPC = new RPC();
@@ -31,6 +31,10 @@ export async function queryTxOutSetInfo():Promise<TxOutSetInfo> {
   } catch (err) {
     console.error(err);
   } finally {
-    return new TxOutSetInfo(info);
+    if (info) {
+      return new TxOutSetInfo(info);
+    } else {
+      return null;
+    }
   }
 }

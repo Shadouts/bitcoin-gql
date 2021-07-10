@@ -8,42 +8,44 @@ import {
 } from '../types/RawtransactionQueryParams';
 
 export default class RawTransaction {
-  public blockhash:string;
-  public blocktime:number;
-  public confirmations:number;
-  public hash:string;
-  public hex:string;
-  public in_active_chain:boolean;
-  public locktime:number;
-  public size:number;
-  public time:number;
-  public txid:string;
-  public version:number;
-  public vin:object[];
-  public vout:object[]
-  public vsize:number;
-  public weight:number;
+  public blockhash:string|undefined;
+  public blocktime:number|undefined;
+  public confirmations:number|undefined;
+  public hash:string|undefined;
+  public hex:string|undefined;
+  public in_active_chain:boolean|undefined;
+  public locktime:number|undefined;
+  public size:number|undefined;
+  public time:number|undefined;
+  public txid:string|undefined;
+  public version:number|undefined;
+  public vin:object[]|undefined;
+  public vout:object[]|undefined;
+  public vsize:number|undefined;
+  public weight:number|undefined;
 
   constructor (initVals:RawTransactionInterface) {
     Object.assign(this, initVals);
   }
 
   public block():Promise<Block> {
-    return queryBlock({ blockhash: this.blockhash });
+    return queryBlock({ blockhash: this.blockhash || '' });
   }
 }
 
 export async function decodeRawTransaction(
   args:DecodeRawTransactionParams
-):Promise<RawTransaction> {
-  let txData:RawTransactionInterface;
+):Promise<RawTransaction|null> {
+  let txData:RawTransactionInterface|null = null;
 
   try {
     const rpc:RPC = new RPC();
-    let params:[string, boolean?] = [args.hexstring];
+    let params:[string]|[string, boolean];
 
-    if (args.iswitness !== undefined) {
-      params.push(args.iswitness);
+    if (args.iswitness) {
+      params = [args.hexstring || '', true];
+    } else {
+      params = [args.hexstring || ''];
     }
 
     txData = await rpc.query({
@@ -53,14 +55,18 @@ export async function decodeRawTransaction(
   } catch (err) {
     console.error(err);
   } finally {
-    return new RawTransaction(txData)
+    if (txData) {
+      return new RawTransaction(txData);
+    } else {
+      return null;
+    }
   }
 }
 
 export async function queryRawTransaction(
   args:GetRawTransactionParams
-):Promise<RawTransaction> {
-  let txData:RawTransactionInterface;
+):Promise<RawTransaction|null> {
+  let txData:RawTransactionInterface|null = null;
 
   try {
     if (args.txid === "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b") {
@@ -76,7 +82,11 @@ export async function queryRawTransaction(
   } catch (err) {
     console.error(err);
   } finally {
-    return new RawTransaction(txData)
+    if (txData) {
+      return new RawTransaction(txData)
+    } else {
+      return null;
+    }
   }
 }
 
