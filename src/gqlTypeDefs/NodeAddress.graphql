@@ -1,0 +1,6 @@
+type NodeAddress {
+  address:String
+  port:Int
+  services:Float
+  time:Float
+}

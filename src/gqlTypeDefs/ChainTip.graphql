@@ -1,0 +1,7 @@
+type ChainTip {
+  block:Block
+  branchlen:Int
+  hash:ID
+  height:Int
+  status:String
+}

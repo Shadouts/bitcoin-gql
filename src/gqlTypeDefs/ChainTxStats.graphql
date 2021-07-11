@@ -1,0 +1,9 @@
+type ChainTxStats {
+  time:Float
+  txcount:Int
+  txrate:Float
+  window_final_block_hash:String
+  window_block_count:Int
+  window_interval:Int
+  window_tx_count:Int
+}

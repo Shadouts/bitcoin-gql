@@ -30,10 +30,11 @@ module.exports = {
   resolve: {
     alias: {
       Classes: path.resolve(__dirname, 'src/classes/'),
+      GQLTypeDefs: path.resolve(__dirname, 'src/gqlTypeDefs/'),
       Models: path.resolve(__dirname, 'src/models/'),
       Schema: path.resolve(__dirname, 'src/schema/'),
       Types: path.resolve(__dirname, 'src/types/')
     },
-    extensions: [ '.ts', '.gql', '.graphql' ]
+    extensions: [ '.ts' ]
   }
 };

@@ -1,0 +1,11 @@
+type TxOutSetInfo {
+  bestblock:ID
+  bestBlockData:Block
+  bogosize:Float
+  disk_size:Float
+  hash_serialized_2:String
+  height:Int
+  total_amount:Float
+  transactions:Int
+  txouts:Int
+}

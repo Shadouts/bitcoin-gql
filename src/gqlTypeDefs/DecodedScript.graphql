@@ -1,0 +1,10 @@
+type DecodedScript {
+  addresses:[ ID ]
+  asm:ID!
+  hex:String
+  p2sh:String
+  p2shSegwit:String
+  reqSigs:Int
+  segwit:DecodedScript
+  type:String
+}

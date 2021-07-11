@@ -1,0 +1,40 @@
+type Block {
+  bits:String
+  blockHeader:String
+  chainwork:String
+  confirmations:Int
+  difficulty:Float
+
+  """Only this value is returned on verbosity 0"""
+  hash:ID
+
+  height:Int
+  hex:String
+  mediantime:Float
+  merkleroot:String
+
+  """Block queried using nextblockhash"""
+  nextBlock(verbosity:Int):Block
+
+  nextblockhash:ID
+  nTx:Int
+  nonce:Float
+
+  """Block queried using previousblockhash"""
+  previousBlock(verbosity:Int):Block
+
+  previousblockhash:ID
+  strippedsize:Int
+  size:Int
+  time:Float
+
+  """Only returned on verbosity 1"""
+  tx:[ ID ]
+
+  """Only returned on verbosity 2."""
+  txVerbose:[ RawTransaction ] # Can a directive be used to enforce this behavior?
+
+  version:Int
+  versionHex:String
+  weight:Int
+}

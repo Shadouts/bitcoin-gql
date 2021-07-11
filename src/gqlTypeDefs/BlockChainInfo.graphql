@@ -1,0 +1,55 @@
+type BlockChainInfo {
+  automatic_pruning:Boolean
+  bestBlock(verbosity:Int):Block
+  bestblockhash:ID
+  bip9_softforks:BIP9Softforks
+  blocks:Int
+  chain:String
+  chainwork:String
+  difficulty:Float
+  headers:Int
+  initialblockdownload:Boolean
+  mediantime:Float
+  pruned:Boolean
+  pruneheight:Int
+  prune_target_size:Int
+  size_on_disk:Float
+  softforks:[ Softfork ]
+  verificationprogress:Float
+  warnings:String
+}
+
+# These BIP9softforks need better typing. Broken in new bitcoind?
+type BIP9Softfork {
+  bit:Int
+  since:Int
+  startTime:Float
+  statistics:BIP9SoftforkStatistics
+  status:String
+  timeout:Float
+}
+type BIP9Softforks {
+  csv:BIP9Softfork
+  segwit:BIP9Softfork
+}
+type BIP9SoftforkStatistics {
+  count:Int
+  elapsed:Int
+  period:Int
+  possible:Boolean
+  threshold:Int
+}
+
+type Softfork {
+  id:ID!
+  enforce:SoftforkEnforcement
+  reject:SoftforkEnforcement
+  version:Int!
+}
+
+type SoftforkEnforcement {
+  found:Int
+  required:Int
+  status:Boolean
+  window:Int
+}

@@ -11,6 +11,7 @@
     "outDir": "./dist/",
     "paths": {
       "Classes/*": ["classes/*"],
+      "GQLTypeDefs/*": ["gqlTypeDefs/*"],
       "Models/*": ["models/*"],
       "Schema/*": ["schema/*"],
       "Types/*": ["types/*"],
@@ -21,6 +22,7 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "target": "esnext",
-    "types" : [ "node" ]
+    "types" : [ "node" ],
+    "typeRoots": ["node_modules/@types", "src/@types"]
   }
 }

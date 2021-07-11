@@ -1,0 +1,38 @@
+type RawTransaction {
+  block:Block
+  blockhash:ID
+  blocktime:Float
+  confirmations:Int
+  hash:String
+  hex:String
+  in_active_chain:Boolean
+  locktime:Float
+  size:Int
+  time:Float
+  txid:ID
+  version:Int
+  vin:[ TransactionInput ]
+  vout:[ TransactionOutput ]
+  vsize:Int
+  weight:Int
+}
+
+type ScriptSig {
+  asm:String
+  hex:String
+}
+
+type TransactionInput {
+  coinbase:String
+  sequence:Float
+  scriptSig:ScriptSig
+  txid:ID
+  txinwitness:[ ID ]
+  vout:Int
+}
+
+type TransactionOutput {
+  value:Float
+  n:Int
+  scriptPubKey:ScriptPubKey
+}

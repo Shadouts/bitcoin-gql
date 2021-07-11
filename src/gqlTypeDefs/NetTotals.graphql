@@ -1,0 +1,15 @@
+type NetTotals {
+  timemillis:Float
+  totalbytesrecv:Float
+  totalbytessent:Float
+  uploadtarget:UploadTarget
+}
+
+type UploadTarget {
+  bytes_left_in_cycle:Float
+  serve_historical_blocks:Boolean
+  target_reached:Boolean
+  target:Float
+  time_left_in_cycle:Float
+  timeframe:Float
+}

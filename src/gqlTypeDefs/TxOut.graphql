@@ -1,0 +1,7 @@
+type TxOut {
+  bestblock:ID
+  coinbase:Boolean
+  confirmations:Int
+  scriptPubKey:ScriptPubKey
+  value:Float
+}

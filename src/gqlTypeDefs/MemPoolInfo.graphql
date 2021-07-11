@@ -1,0 +1,9 @@
+type MemPoolInfo {
+  bytes:Float
+  maxmempool:Float
+  mempoolminfee:Float
+  minrelaytxfee:Float
+  rawMemPool:[ ID ]
+  size:Int
+  usage:Int
+}

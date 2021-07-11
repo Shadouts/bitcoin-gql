@@ -1,0 +1,26 @@
+# Not ready for mutations
+# type Mutation {
+    ### Blockchain ###
+    # preciousblock "blockhash"
+    # pruneblockchain (don't add)
+    # savemempool (breaks statelessness without external storage)
+    # scantxoutset <action> ( <scanobjects> )
+
+    ### Network ###
+    # addnode
+    # clearbanned
+    # disconnectnode
+    # setban
+    # setnetworkactive
+
+    ### Rawtransactions ###
+    # combinepsbt ["psbt",...]
+    # combinerawtransaction ["hexstring",...]
+    # converttopsbt "hexstring" ( permitsigdata iswitness )
+    # finalizepsbt "psbt" ( extract )
+    # fundrawtransaction "hexstring" ( options iswitness )
+    # joinpsbts ["psbt",...]
+    # sendrawtransaction "hexstring" ( allowhighfees )
+    # signrawtransactionwithkey "hexstring" ["privatekey",...] ( [{"txid":"hex","vout":n,"scriptPubKey":"hex","redeemScript":"hex","witnessScript":"hex","amount":amount},...] "sighashtype" )
+    # utxoupdatepsbt "psbt"
+# }

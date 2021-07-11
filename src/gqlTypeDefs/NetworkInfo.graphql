@@ -1,0 +1,29 @@
+type LocalAddress {
+  address:String
+  port:Int
+  score:Int
+}
+
+type Network {
+  limited:Boolean
+  name:String
+  proxy_randomize_credentials:Boolean
+  proxy:String
+  reachable:Boolean
+}
+
+type NetworkInfo {
+  connections:Int
+  incrementalfee:Float
+  localaddresses:[ LocalAddress ]
+  localrelay:Boolean
+  localservices:String
+  networkactive:Boolean
+  networks:[ Network ]
+  protocolversion:Int
+  relayfee:Float
+  subversion:String
+  timeoffset:Float
+  version:Int
+  warnings:String
+}

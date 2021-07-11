@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 import express from 'express';
-import graphqlHTTP from 'express-graphql';
+import { graphqlHTTP } from 'express-graphql';
 import cors from 'cors';
 import schema from './schema';
 import resolvers from './resolvers';

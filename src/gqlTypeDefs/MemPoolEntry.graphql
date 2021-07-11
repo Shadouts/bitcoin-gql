@@ -1,0 +1,25 @@
+type MemPoolEntry {
+  ancestorcount:Int
+  ancestorfees:Int
+  ancestorsize:Int
+  bip125Replaceable:Boolean
+  depends:[ ID ]
+  descendantcount:Int
+  descendantfees:Int
+  descendantsize:Int
+  fee:Float
+  fees:MemPoolEntryFees
+  height:Int
+  modifiedfee:Float
+  size:Int
+  spentby:[ ID ]
+  time:Float
+  wtxid:String
+}
+
+type MemPoolEntryFees {
+  ancestor:Float
+  base:Float
+  descendant:Float
+  modified:Float
+}

@@ -1,0 +1,31 @@
+type BlockStats {
+  avgfee:Int
+  avgfeerate:Int
+  avgtxsize:Int
+  blockhash:String
+  feerate_percentiles:[ Int ]
+  height:Int
+  ins:Int
+  maxfee:Int
+  maxfeerate:Int
+  maxtxsize:Int
+  medianfee:Int
+  mediantime:Float
+  mediantxsize:Int
+  minfee:Int
+  minfeerate:Int
+  mintxsize:Int
+  outs:Int
+  subsidy:Float
+  swtotal_size:Int
+  swtotal_weight:Int
+  swtxs:Int
+  time:Float
+  total_out:Float
+  total_size:Int
+  total_weight:Int
+  totalfee:Int
+  txs:Int
+  utxo_increase:Int
+  utxo_size_inc:Int
+}

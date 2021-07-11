@@ -1,0 +1,7 @@
+type ScriptPubKey {
+  addresses:[ ID ]
+  asm:String
+  hex:String
+  reqSigs:Int
+  type:String
+}

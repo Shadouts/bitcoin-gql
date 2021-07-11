@@ -1,0 +1,30 @@
+type PeerInfo {
+  addnode:Boolean
+  addr:String
+  addrbind:String
+  addrlocal:String
+  banscore:Int
+  # bytesrecv_per_msg: How should this work?
+  bytesrecv:Float
+  # bytessent_per_msg: How should this work?
+  bytessent:Float
+  conntime:Float
+  id:Int
+  inbound:Boolean
+  inflight:[ Int ]
+  lastrecv:Float
+  lastsend:Float
+  minfeefilter:Int
+  minping:Float
+  pingtime:Float
+  pingwait:Float
+  relaytxes:Boolean
+  services:String
+  startingheight:Int
+  subver:String
+  synced_blocks:Int
+  synced_headers:Int
+  timeoffset:Float
+  version:Int
+  whitelisted:Boolean
+}
