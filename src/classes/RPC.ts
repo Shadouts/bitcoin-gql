@@ -1,5 +1,5 @@
 import request from 'superagent';
-import Query from '../types/Query';
+import Query from 'Types/Query';
 
 export default class RPC {
   private rpcUser:string|null;
