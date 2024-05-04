@@ -53,7 +53,7 @@ npm run build;
 npm start;
 ```
 
-The GraphQL API will be served at root from port 3000.
+By default, the GraphQL API will be served at root from port 3000.
 
 If you've enabled the GraphiQL IDE, you can browse to http://localhost:3000/btc-gql to use it and view the API documentation.
 
