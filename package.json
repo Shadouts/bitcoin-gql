@@ -1,6 +1,6 @@
 {
   "name": "bitcoin-gql",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "A GraphQL API for the Bitcoin JSON RPC.",
   "repository": "https://github.com/Shadouts/bitcoin-gql.git",
   "license": "MIT",
@@ -24,7 +24,7 @@
     "@types/superagent": "^4.1.12",
     "clean-webpack-plugin": "^0.1.19",
     "graphql-tag": "^2.12.5",
-    "nodemon": "^2.0.22",
+    "nodemon": "^3.1.0",
     "ts-loader": "^9.2.3",
     "typescript": "^4.3.5",
     "webpack": "^5.76.0",
